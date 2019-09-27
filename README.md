@@ -1,47 +1,28 @@
-# Docugate
-A GraphQL-based gateway to interact with Documize. Initally providing search functionality.
+# Gh-Deploy
+A simple CLI and node package that wraps creating github deployments and statuses
 
-## To Run
+## Startup
 
-### Locally
+### As A CLI
 
-- copy and edit env file as needed `cp .env.production.example .env.production`
-- install project dependencies `npm install`
-- build project `npm run build`
-- run `npm start`
+`npx gh-deploy -h`
 
-### On Openshift
+### As a node module
 
-> this app is leveraging the [bcdk](https://github.com/bcDevOps/bcdk), many of the processes to build and deploy
-have been abstracted into scripts within `.pipeline/`
+`npm install --save gh-deploy`
 
-- To build: 
-  > open up a pr in github
-  - change into pipeline directory `cd .pipeline/.lib`
-  - install project dependencies `npm install`
-  - `npm run build -- --pr=<pr number>`
-  This will build the application in the tools namespace as configuired in `./.pipeline/lib/config.js`
+```js
+// in a js file
 
-- To deploy:
-  - change into pipeline directory `cd .pipeline/.lib`
-  - install project dependencies `npm install` (if not already run)
-  - `npm run deploy -- --pr=<pr number> --env=<dev|test|prod>`
+import { createDeployment, createDeploymentStatus } from 'gh-deploy'
 
-  ### With Jenkins
-  > please note that eventually build and deploy should and will be controlled via a _jenkins job_. 
-  This will automatically build/deploy on the creation of a pr. 
+createDeployment({
+  environment: 'production'
+}, repo, owner, token)
+.then(() => null);
 
-
-## Supported GraphQL Queries
-> graphql queries can be introspected with graphql visualization tools like [GraphQlPlayground](https://github.com/prisma-labs/graphql-playground)
-
-- Searching
-```graphql
-query {
-  search(searchString: "foo", limit: 10) {
-    id
-    ...
-    ...
-  }
-}
+createDeploymentStatus({
+  state: 'success'
+}, repo, owner, token)
+.then(() => null);
 ```

@@ -30,11 +30,12 @@ class DeploymentCommand extends Command {
         options.payload = JSON.parse(options.payload);
       } catch (e) {
         console.error('--payload flag must have a JSON formatted string as a value');
-        process.exit(0);
+        process.exit(1);
       }
     }
     const deployment = await createDeployment(options, repo, owner, token);
     this.log(deployment.data.id);
+    process.exit(0);
   }
 }
 
