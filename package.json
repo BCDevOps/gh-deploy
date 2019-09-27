@@ -1,5 +1,5 @@
 {
-  "name": "gh-deploy",
+  "name": "@bcgov/gh-deploy",
   "version": "1.0.0",
   "description": "A cli and importable node module wrapper around the github deployments api",
   "main": "dist/index.js",
@@ -9,6 +9,7 @@
   "files": [
     "dist/commands/"
   ],
+  "repository": "github:bcDevOps/gh-deploy",
   "bugs": "https://github.com/patricksimonian/gh-deploy/issues",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

@@ -1,6 +1,7 @@
 # Gh-Deploy
 A simple CLI and node package that wraps creating github deployments and statuses
 
+Github Deployments API docs can be found [here](https://developer.github.com/v3/repos/deployments/)
 ## Startup
 
 ### As A CLI
