@@ -6,11 +6,11 @@ Github Deployments API docs can be found [here](https://developer.github.com/v3/
 
 ### As A CLI
 
-`npx gh-deploy -h`
+`npx @bcgov/gh-deploy -h`
 
 ### As a node module
 
-`npm install --save gh-deploy`
+`npm install --save @bcgov/gh-deploy`
 
 ```js
 // in a js file
