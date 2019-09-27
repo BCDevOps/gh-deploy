@@ -9,6 +9,7 @@
   "files": [
     "dist/commands/"
   ],
+  "repository": "github:bcDevOps/gh-deploy",
   "bugs": "https://github.com/patricksimonian/gh-deploy/issues",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
