@@ -34,7 +34,11 @@ class DeploymentCommand extends Command {
     }
 
     if (options['required-contexts']) {
-      options.required_contexts = options['required-contexts'].split(',');
+      if (options['required-contexts'] === '[]') {
+        options.required_contexts = [];
+      } else {
+        options.required_contexts = options['required-contexts'].split(',');
+      }
     }
 
     if (options['transient-environment']) {
@@ -66,7 +70,7 @@ usage: --repo=foo *
        --env=production
        --payload='{"hello": "world"}'
        --auto-merge=true
-       --required-contexts=foo,bar,baz
+       --required-contexts=foo,bar,baz OR [] for no contexts
        --description='this is a description'
        --transient-environment=false
 returns deployment id if successful
