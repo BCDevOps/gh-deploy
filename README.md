@@ -15,7 +15,7 @@ Github Deployments API docs can be found [here](https://developer.github.com/v3/
 ```js
 // in a js file
 
-import { createDeployment, createDeploymentStatus } from 'gh-deploy'
+import { createDeployment, createDeploymentStatus } from '@bcgov/gh-deploy'
 
 createDeployment({
   environment: 'production'
