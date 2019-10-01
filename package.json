@@ -1,6 +1,6 @@
 {
   "name": "@bcgov/gh-deploy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A cli and importable node module wrapper around the github deployments api",
   "main": "dist/index.js",
   "bin": {
