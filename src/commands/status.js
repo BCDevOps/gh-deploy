@@ -69,7 +69,7 @@ StatusCommand.flags = {
   'repo': flags.string({required: true, char: 'r', description: 'github repo name'}),
   'owner': flags.string({required: true, char: 'o', description: 'github owner name'}),
   'token': flags.string({required: true, char: 't', description: 'github access token (required correct permissions)'}),
-  'deployment': flags.string({required: true, char: 'd', description: 'github deployment id'}),
+  'deployment': flags.string({required: true, description: 'github deployment id'}),
   'description': flags.string({char: 'd', description: 'description for your deployment status'}),
   'state': flags.string({required: true, char: 's', description: 'the deployments state', options: Object.keys(STATUSES)}),
   'url': flags.string({char: 'u', description: 'The environment url (translates to log_url in the deployment status call)'}),
