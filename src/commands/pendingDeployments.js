@@ -18,7 +18,6 @@ Created by Patrick Simonian
 /* eslint-disable max-len */
 /* eslint-disable require-jsdoc */
 import {Command, flags} from '@oclif/command';
-import Octokit from '@octokit/rest';
 import {getPendingDeployments} from '..';
 
 
