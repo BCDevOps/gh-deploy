@@ -1,0 +1,26 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
+      "program": "${workspaceFolder}/bin/run",
+      "args": [
+        "deployment",
+        "--ref=master",
+        "-d=Deploying to prod (scheduled build)",
+        "-e=production",
+        "-o=bcgov",
+        "--repo=devhub-app-web",
+        "-t=7b3a767f305e1b6f742612c7fbf6c17005a486df",
+        "--required-contexts=[]"
+      ],
+      "console": "integratedTerminal"
+    }
+ 
+  ]
+}

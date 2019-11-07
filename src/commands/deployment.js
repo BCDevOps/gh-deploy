@@ -54,8 +54,13 @@ class DeploymentCommand extends Command {
         process.exit(1);
       }
     }
-    const deployment = await createDeployment(options, repo, owner, token);
-    this.log(deployment.data.id);
+    try {
+      const deployment = await createDeployment(options, repo, owner, token);
+      this.log(deployment.data.id);
+    } catch (e) {
+      console.error(e);
+      process.exit(1);
+    }
     process.exit(0);
   }
 }
