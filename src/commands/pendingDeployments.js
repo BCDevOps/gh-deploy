@@ -18,8 +18,9 @@ Created by Patrick Simonian
 /* eslint-disable max-len */
 /* eslint-disable require-jsdoc */
 import {Command, flags} from '@oclif/command';
-import {createDeployment} from '../index';
-import {isString} from 'util';
+import Octokit from '@octokit/rest';
+import {getPendingDeployments} from '..';
+
 
 class DeploymentCommand extends Command {
   async run() {
@@ -27,16 +28,21 @@ class DeploymentCommand extends Command {
     const {repo, owner, token, ...rest} = flags;
     const options = {
       ...rest,
-      ref: rest.ref,
+      ref: rest.ref || 'master',
     };
 
+    // octokit will get deployments made to all environments if no environment is passed
+    // we are just adding some more UX by allowing an 'all' environment to be pass
     if (rest.env && rest.env.toLowerCase() !== 'all') {
-      options.environment = 'all';
+      options.environment = rest.env;
     }
 
     try {
-      const deployment = await createDeployment(options, repo, owner, token);
-      this.log(deployment.data.id);
+      const pendingDeploys = await getPendingDeployments(options, repo, owner, token);
+
+
+      this.log(pendingDeploys, '\n');
+      // this.log(deployment.data.id);
     } catch (e) {
       console.error(e);
       process.exit(1);
@@ -51,9 +57,10 @@ DeploymentCommand.description = `Returns number of pending deployments made agai
 usage: --repo=foo *
        --owner=bar * 
        --token=asdf1234 * 
-       --ref=mybranch *
+       --ref=mybranch
        --env=production // defaults to all environments
-
+       --task=foo
+       --sha=1iasksdflkjsdf
   returns a number if successful
 `;
 
@@ -61,8 +68,10 @@ DeploymentCommand.flags = {
   'repo': flags.string({required: true, char: 'r', description: 'github repo name'}),
   'owner': flags.string({required: true, char: 'o', description: 'github owner name'}),
   'token': flags.string({required: true, char: 't', description: 'github access token (required correct permissions)'}),
-  'ref': flags.string({required: true, char: 'r', description: 'github ref,branch, or commit hash'}),
+  'ref': flags.string({required: false, char: 'r', description: 'github ref,branch, or commit hash (defaults to master)'}),
   'env': flags.string({required: false, char: 'e', description: 'the environment to check deployments against\n defaults to all environments'}),
+  'task': flags.string({required: false, description: 'The name of the task for the deployment'}),
+  'sha': flags.string({required: false, description: 'The SHA recorded at creation time'}),
 };
 
 module.exports = DeploymentCommand;

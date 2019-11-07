@@ -22,6 +22,7 @@ Created by Patrick Simonian
 
 import Octokit from '@octokit/rest';
 import oclif from '@oclif/command';
+import {STATUS_STATES} from './constants';
 
 /**
  * Create Deployment
@@ -58,11 +59,42 @@ export const createDeployment = (options, repo, owner, token = '') => {
   * @param {String} repo the repo name
   * @param {String} owner the github owner
   * @param {String} token the github access token
-  * @return {Promise}
+  * @return {Promise} {String}
   */
 export const createDeploymentStatus = (options, repo, owner, token = '') => {
   const o = new Octokit({auth: token});
   return o.repos.createDeploymentStatus({...options, repo, owner});
+};
+
+
+/**
+  * Pending deployments refer to deployments that have the most recent status === to pending
+  * @param {Object} options the deployment payload
+  * @param {String} options.ref the branch/tag/commit to create deployment for
+  * @param {String} options.sha The SHA recorded at creation time. Default: none
+  * @param {String} options.tasks he name of the task for the deployment (e.g., deploy or deploy:migrations). Default: none
+  * @param {String} options.environment Name for the target deployment environment (e.g., production, staging, qa). Default: production
+  * @param {String} repo the repo name
+  * @param {String} owner the github owner
+  * @param {String} token the github access token
+  * @return {Promise} The number of pending deployments for a given ref
+  */
+export const getPendingDeployments = async (options, repo, owner, token = '') => {
+  const o = new Octokit({auth: token});
+  const deployments = await o.repos.listDeployments({...options, repo, owner});
+
+  const pendingDeployments = await Promise.all(deployments.data.map(async (deployment) => {
+    const response = await o.repos.listDeploymentStatuses({deployment_id: deployment.id, repo, owner});
+    // deployment is currently pending if its last status is pending
+    if (response.data.length > 0) {
+      // order by date last updated
+      const statusesInOrder = response.data.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+      return statusesInOrder[0].state === STATUS_STATES.PENDING;
+    }
+    return false;
+  }));
+
+  return pendingDeployments.reduce((acc, isPending) => acc + isPending, 0);
 };
 
 
