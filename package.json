@@ -8,6 +8,7 @@
   },
   "files": [
     "dist/commands/",
+    "dist/constants.js",
     "bin"
   ],
   "repository": "github:bcDevOps/gh-deploy",
