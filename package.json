@@ -13,7 +13,7 @@
   "repository": "github:bcDevOps/gh-deploy",
   "bugs": "https://github.com/patricksimonian/gh-deploy/issues",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "babel src -d dist",
     "prepare": "npm run build"
   },
@@ -32,11 +32,13 @@
     "commands": "dist/commands/"
   },
   "devDependencies": {
-    "@oclif/dev-cli": "^1.22.2",
     "@babel/cli": "^7.6.0",
     "@babel/core": "^7.6.0",
     "@babel/preset-env": "^7.6.0",
+    "@oclif/dev-cli": "^1.22.2",
+    "babel-jest": "^24.9.0",
     "eslint": "^6.4.0",
-    "eslint-config-google": "^0.14.0"
+    "eslint-config-google": "^0.14.0",
+    "jest": "^24.9.0"
   }
 }
