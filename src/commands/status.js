@@ -46,10 +46,14 @@ class StatusCommand extends Command {
     if (options.deployment) {
       options.deployment_id = options.deployment;
     }
-
-    await createDeploymentStatus(options, repo, owner, token);
-    this.log('Created status');
-    process.exit(0);
+    try {
+      await createDeploymentStatus(options, repo, owner, token);
+      this.log('Created status');
+      process.exit(0);
+    } catch (e) {
+      console.error(e);
+      process.exit(1);
+    }
   }
 }
 
