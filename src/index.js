@@ -20,7 +20,7 @@ Created by Patrick Simonian
 // A CLI and importable node module wrapper around the github deployments api
 // api info can be found here https://developer.github.com/v3/repos/deployments/
 
-import Octokit from '@octokit/rest';
+import {Octokit} from '@octokit/rest';
 import oclif from '@oclif/command';
 import {STATUS_STATES} from './constants';
 
