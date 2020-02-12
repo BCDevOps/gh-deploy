@@ -33,18 +33,18 @@ const STATUSES = {
 class StatusCommand extends Command {
   async run() {
     const {flags} = this.parse(StatusCommand);
-    const {repo, owner, token, ...rest} = flags;
+    const {repo, owner, token, url, deployment, ...rest} = flags;
 
     const options = {
       ...rest,
     };
 
-    if (options['url']) {
-      options.log_url = options['url'];
+    if (url) {
+      options.log_url = url;
     }
 
-    if (options.deployment) {
-      options.deployment_id = options.deployment;
+    if (deployment) {
+      options.deployment_id = deployment;
     }
     try {
       await createDeploymentStatus(options, repo, owner, token);
