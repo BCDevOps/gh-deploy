@@ -24,7 +24,7 @@ import {getPendingDeployments} from '..';
 class DeploymentCommand extends Command {
   async run() {
     const {flags} = this.parse(DeploymentCommand);
-    const {repo, owner, token, ...rest} = flags;
+    const {repo, owner, token, env, ...rest} = flags;
     const options = {
       ...rest,
       ref: rest.ref || 'master',
@@ -32,16 +32,13 @@ class DeploymentCommand extends Command {
 
     // octokit will get deployments made to all environments if no environment is passed
     // we are just adding some more UX by allowing an 'all' environment to be pass
-    if (rest.env && rest.env.toLowerCase() !== 'all') {
-      options.environment = rest.env;
+    if (env && env.toLowerCase() !== 'all') {
+      options.environment = env;
     }
 
     try {
       const pendingDeploys = await getPendingDeployments(options, repo, owner, token);
-
-
       this.log(pendingDeploys, '\n');
-      // this.log(deployment.data.id);
     } catch (e) {
       console.error(e);
       process.exit(1);
