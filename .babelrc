@@ -3,6 +3,5 @@
     "targets": {
       "node": "current"
     }
-  }]],
-  "ignore": ["src/__tests__"]
+  }]]
 }
