@@ -23,26 +23,33 @@ import {isString} from 'util';
 class DeploymentCommand extends Command {
   async run() {
     const {flags} = this.parse(DeploymentCommand);
-    const {repo, owner, token, ...rest} = flags;
+    const {
+      repo,
+      owner,
+      token,
+      env,
+      'auto-merge': autoMerge,
+      'required-contexts': requiredContexts,
+      'transient-environment': transientEnvironment,
+      ...rest
+    } = flags;
     const options = {
       ...rest,
-      environment: rest.env || rest.environment,
+      environment: env || rest.environment,
     };
 
-    if (options['auto-merge']) {
-      options.auto_merge = options['auto-merge'];
-    }
+    options.auto_merge = autoMerge;
 
-    if (options['required-contexts']) {
-      if (options['required-contexts'] === '[]') {
+    if (requiredContexts) {
+      if (requiredContexts === '[]') {
         options.required_contexts = [];
       } else {
-        options.required_contexts = options['required-contexts'].split(',');
+        options.required_contexts = requiredContexts.split(',');
       }
     }
 
-    if (options['transient-environment']) {
-      options.transient_environment = options['transient_environment'];
+    if (transientEnvironment) {
+      options.transient_environment = transientEnvironment;
     }
 
     // if payload is a json string evaluate it
@@ -74,10 +81,10 @@ usage: --repo=foo *
        --ref=mybranch *
        --env=production
        --payload='{"hello": "world"}'
-       --auto-merge=true
+       --[no-]auto-merge
        --required-contexts=foo,bar,baz OR [] for no contexts
        --description='this is a description'
-       --transient-environment=false
+       --transient-environment
 returns deployment id if successful
 `;
 
@@ -85,10 +92,10 @@ DeploymentCommand.flags = {
   'repo': flags.string({required: true, char: 'r', description: 'github repo name'}),
   'owner': flags.string({required: true, char: 'o', description: 'github owner name'}),
   'token': flags.string({required: true, char: 't', description: 'github access token (required correct permissions)'}),
-  'ref': flags.string({required: true, char: 'r', description: 'github ref,branch, or commit hash'}),
+  'ref': flags.string({required: true, description: 'github ref,branch, or commit hash'}),
   'env': flags.string({char: 'e', description: 'the deployment environment (production, qa, test, development etc)'}),
   'payload': flags.string({char: 'p', description: 'a json string that contains any extra context you need for your deployment'}),
-  'auto-merge': flags.boolean({description: 'comma seperated string. auto merge the pr (see gh deployments api for reference)'}),
+  'auto-merge': flags.boolean({description: 'auto merge the default branch into pr (see gh deployments api for reference)', default: true, allowNo: true}),
   'required-contexts': flags.string({description: 'parameter allows you to specify a subset of contexts that must be success'}),
   'description': flags.string({char: 'd', description: 'description for your deployment'}),
   'transient-environment': flags.boolean({description: 'Specifies if the given environment is specific to the deployment and will no longer exist at some point in the future.'}),

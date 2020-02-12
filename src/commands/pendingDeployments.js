@@ -24,7 +24,7 @@ import {getPendingDeployments} from '..';
 class DeploymentCommand extends Command {
   async run() {
     const {flags} = this.parse(DeploymentCommand);
-    const {repo, owner, token, ...rest} = flags;
+    const {repo, owner, token, env, ...rest} = flags;
     const options = {
       ...rest,
       ref: rest.ref || 'master',
@@ -32,16 +32,13 @@ class DeploymentCommand extends Command {
 
     // octokit will get deployments made to all environments if no environment is passed
     // we are just adding some more UX by allowing an 'all' environment to be pass
-    if (rest.env && rest.env.toLowerCase() !== 'all') {
-      options.environment = rest.env;
+    if (env && env.toLowerCase() !== 'all') {
+      options.environment = env;
     }
 
     try {
       const pendingDeploys = await getPendingDeployments(options, repo, owner, token);
-
-
       this.log(pendingDeploys, '\n');
-      // this.log(deployment.data.id);
     } catch (e) {
       console.error(e);
       process.exit(1);
@@ -67,7 +64,7 @@ DeploymentCommand.flags = {
   'repo': flags.string({required: true, char: 'r', description: 'github repo name'}),
   'owner': flags.string({required: true, char: 'o', description: 'github owner name'}),
   'token': flags.string({required: true, char: 't', description: 'github access token (required correct permissions)'}),
-  'ref': flags.string({required: false, char: 'r', description: 'github ref,branch, or commit hash (defaults to master)'}),
+  'ref': flags.string({required: false, description: 'github ref,branch, or commit hash (defaults to master)'}),
   'env': flags.string({required: false, char: 'e', description: 'the environment to check deployments against\n defaults to all environments'}),
   'task': flags.string({required: false, description: 'The name of the task for the deployment'}),
   'sha': flags.string({required: false, description: 'The SHA recorded at creation time'}),
