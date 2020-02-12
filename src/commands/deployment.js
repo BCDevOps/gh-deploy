@@ -77,7 +77,7 @@ usage: --repo=foo *
        --[no-]auto-merge
        --required-contexts=foo,bar,baz OR [] for no contexts
        --description='this is a description'
-       --transient-environment=false
+       --transient-environment
 returns deployment id if successful
 `;
 
