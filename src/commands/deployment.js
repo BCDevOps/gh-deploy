@@ -92,7 +92,7 @@ DeploymentCommand.flags = {
   'repo': flags.string({required: true, char: 'r', description: 'github repo name'}),
   'owner': flags.string({required: true, char: 'o', description: 'github owner name'}),
   'token': flags.string({required: true, char: 't', description: 'github access token (required correct permissions)'}),
-  'ref': flags.string({required: true, char: 'r', description: 'github ref,branch, or commit hash'}),
+  'ref': flags.string({required: true, description: 'github ref,branch, or commit hash'}),
   'env': flags.string({char: 'e', description: 'the deployment environment (production, qa, test, development etc)'}),
   'payload': flags.string({char: 'p', description: 'a json string that contains any extra context you need for your deployment'}),
   'auto-merge': flags.boolean({description: 'auto merge the default branch into pr (see gh deployments api for reference)', default: true, allowNo: true}),
