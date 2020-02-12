@@ -23,26 +23,33 @@ import {isString} from 'util';
 class DeploymentCommand extends Command {
   async run() {
     const {flags} = this.parse(DeploymentCommand);
-    const {repo, owner, token, ...rest} = flags;
+    const {
+      repo,
+      owner,
+      token,
+      env,
+      'auto-merge': autoMerge,
+      'required-contexts': requiredContexts,
+      'transient-environment': transientEnvironment,
+      ...rest
+    } = flags;
     const options = {
       ...rest,
-      environment: rest.env || rest.environment,
+      environment: env || rest.environment,
     };
 
-    if (options['auto-merge']) {
-      options.auto_merge = options['auto-merge'];
-    }
+    options.auto_merge = autoMerge;
 
-    if (options['required-contexts']) {
-      if (options['required-contexts'] === '[]') {
+    if (requiredContexts) {
+      if (requiredContexts === '[]') {
         options.required_contexts = [];
       } else {
-        options.required_contexts = options['required-contexts'].split(',');
+        options.required_contexts = requiredContexts.split(',');
       }
     }
 
-    if (options['transient-environment']) {
-      options.transient_environment = options['transient_environment'];
+    if (transientEnvironment) {
+      options.transient_environment = transientEnvironment;
     }
 
     // if payload is a json string evaluate it
