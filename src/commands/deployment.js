@@ -74,7 +74,7 @@ usage: --repo=foo *
        --ref=mybranch *
        --env=production
        --payload='{"hello": "world"}'
-       --auto-merge=true
+       --[no-]auto-merge
        --required-contexts=foo,bar,baz OR [] for no contexts
        --description='this is a description'
        --transient-environment=false
@@ -88,7 +88,7 @@ DeploymentCommand.flags = {
   'ref': flags.string({required: true, char: 'r', description: 'github ref,branch, or commit hash'}),
   'env': flags.string({char: 'e', description: 'the deployment environment (production, qa, test, development etc)'}),
   'payload': flags.string({char: 'p', description: 'a json string that contains any extra context you need for your deployment'}),
-  'auto-merge': flags.boolean({description: 'comma seperated string. auto merge the pr (see gh deployments api for reference)'}),
+  'auto-merge': flags.boolean({description: 'auto merge the default branch into pr (see gh deployments api for reference)', default: true, allowNo: true}),
   'required-contexts': flags.string({description: 'parameter allows you to specify a subset of contexts that must be success'}),
   'description': flags.string({char: 'd', description: 'description for your deployment'}),
   'transient-environment': flags.boolean({description: 'Specifies if the given environment is specific to the deployment and will no longer exist at some point in the future.'}),
