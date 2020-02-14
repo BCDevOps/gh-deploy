@@ -19,7 +19,7 @@ Created by Patrick Simonian
 /* eslint-disable require-jsdoc */
 import {Command, flags} from '@oclif/command';
 import {getPendingDeployments} from '..';
-
+import {PREVIEWS} from '../constants';
 
 class DeploymentCommand extends Command {
   async run() {
@@ -28,6 +28,9 @@ class DeploymentCommand extends Command {
     const options = {
       ...rest,
       ref: rest.ref || 'master',
+      mediaType: {
+        previews: [PREVIEWS.ANT_MAN, PREVIEWS.FLASH],
+      },
     };
 
     // octokit will get deployments made to all environments if no environment is passed

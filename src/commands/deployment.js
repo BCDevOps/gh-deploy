@@ -20,6 +20,8 @@ Created by Patrick Simonian
 import {Command, flags} from '@oclif/command';
 import {createDeployment} from '../index';
 import {isString} from 'util';
+import {PREVIEWS} from '../constants';
+
 class DeploymentCommand extends Command {
   async run() {
     const {flags} = this.parse(DeploymentCommand);
@@ -36,6 +38,7 @@ class DeploymentCommand extends Command {
     const options = {
       ...rest,
       environment: env || rest.environment,
+      mediaType: {previews: [PREVIEWS.ANT_MAN]},
     };
 
     options.auto_merge = autoMerge;

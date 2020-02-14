@@ -19,6 +19,7 @@ Created by Patrick Simonian
 /* eslint-disable require-jsdoc */
 import {Command, flags} from '@oclif/command';
 import {createDeploymentStatus} from '../index';
+import {PREVIEWS} from '../constants';
 
 const STATUSES = {
   error: 'error',
@@ -37,6 +38,7 @@ class StatusCommand extends Command {
 
     const options = {
       ...rest,
+      mediaType: {previews: [PREVIEWS.ANT_MAN, PREVIEWS.FLASH]},
     };
 
     if (url) {
