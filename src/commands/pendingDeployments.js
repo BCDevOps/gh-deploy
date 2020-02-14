@@ -54,8 +54,8 @@ DeploymentCommand.description = `Returns number of pending deployments made agai
 ...
 * = required
 usage: --repo=foo *
-       --owner=bar *
-       --token=asdf1234 *
+       --owner=bar * 
+       --token=asdf1234 * 
        --ref=mybranch
        --env=production // defaults to all environments
        --task=foo
@@ -64,24 +64,13 @@ usage: --repo=foo *
 `;
 
 DeploymentCommand.flags = {
-  repo: flags.string({required: true, char: 'r', description: 'github repo name'}),
-  owner: flags.string({required: true, char: 'o', description: 'github owner name'}),
-  token: flags.string({
-    required: true,
-    char: 't',
-    description: 'github access token (required correct permissions)',
-  }),
-  ref: flags.string({
-    required: false,
-    description: 'github ref,branch, or commit hash (defaults to master)',
-  }),
-  env: flags.string({
-    required: false,
-    char: 'e',
-    description: 'the environment to check deployments against\n defaults to all environments',
-  }),
-  task: flags.string({required: false, description: 'The name of the task for the deployment'}),
-  sha: flags.string({required: false, description: 'The SHA recorded at creation time'}),
+  'repo': flags.string({required: true, char: 'r', description: 'github repo name'}),
+  'owner': flags.string({required: true, char: 'o', description: 'github owner name'}),
+  'token': flags.string({required: true, char: 't', description: 'github access token (required correct permissions)'}),
+  'ref': flags.string({required: false, description: 'github ref,branch, or commit hash (defaults to master)'}),
+  'env': flags.string({required: false, char: 'e', description: 'the environment to check deployments against\n defaults to all environments'}),
+  'task': flags.string({required: false, description: 'The name of the task for the deployment'}),
+  'sha': flags.string({required: false, description: 'The SHA recorded at creation time'}),
 };
 
 module.exports = DeploymentCommand;
