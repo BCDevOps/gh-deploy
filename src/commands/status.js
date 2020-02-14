@@ -19,6 +19,7 @@ Created by Patrick Simonian
 /* eslint-disable require-jsdoc */
 import {Command, flags} from '@oclif/command';
 import {createDeploymentStatus} from '../index';
+import {PREVIEWS} from '../constants';
 
 const STATUSES = {
   error: 'error',
@@ -37,7 +38,7 @@ class StatusCommand extends Command {
 
     const options = {
       ...rest,
-      mediaType: {previews: ['ant-man', 'flash']},
+      mediaType: {previews: [PREVIEWS.ANT_MAN, PREVIEWS.FLASH]},
     };
 
     if (url) {
@@ -62,8 +63,8 @@ StatusCommand.description = `Creates a github deployment status
 ...
 * = required
 usage: --repo=foo *
-       --owner=bar * 
-       --token=asdf1234 * 
+       --owner=bar *
+       --token=asdf1234 *
        --state=queued *
        --deployment=12354123
        --url=https://path-to-my-env.com
@@ -71,13 +72,25 @@ returns status id if successful
 `;
 
 StatusCommand.flags = {
-  'repo': flags.string({required: true, char: 'r', description: 'github repo name'}),
-  'owner': flags.string({required: true, char: 'o', description: 'github owner name'}),
-  'token': flags.string({required: true, char: 't', description: 'github access token (required correct permissions)'}),
-  'deployment': flags.string({required: true, description: 'github deployment id'}),
-  'description': flags.string({char: 'd', description: 'description for your deployment status'}),
-  'state': flags.string({required: true, char: 's', description: 'the deployments state', options: Object.keys(STATUSES)}),
-  'url': flags.string({char: 'u', description: 'The environment url (translates to log_url in the deployment status call)'}),
+  repo: flags.string({required: true, char: 'r', description: 'github repo name'}),
+  owner: flags.string({required: true, char: 'o', description: 'github owner name'}),
+  token: flags.string({
+    required: true,
+    char: 't',
+    description: 'github access token (required correct permissions)',
+  }),
+  deployment: flags.string({required: true, description: 'github deployment id'}),
+  description: flags.string({char: 'd', description: 'description for your deployment status'}),
+  state: flags.string({
+    required: true,
+    char: 's',
+    description: 'the deployments state',
+    options: Object.keys(STATUSES),
+  }),
+  url: flags.string({
+    char: 'u',
+    description: 'The environment url (translates to log_url in the deployment status call)',
+  }),
 };
 
 module.exports = StatusCommand;

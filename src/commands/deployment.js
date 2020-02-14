@@ -20,6 +20,8 @@ Created by Patrick Simonian
 import {Command, flags} from '@oclif/command';
 import {createDeployment} from '../index';
 import {isString} from 'util';
+import {PREVIEWS} from '../constants';
+
 class DeploymentCommand extends Command {
   async run() {
     const {flags} = this.parse(DeploymentCommand);
@@ -36,7 +38,7 @@ class DeploymentCommand extends Command {
     const options = {
       ...rest,
       environment: env || rest.environment,
-      mediaType: {previews: ['ant-man']},
+      mediaType: {previews: [PREVIEWS.ANT_MAN]},
     };
 
     options.auto_merge = autoMerge;
@@ -77,8 +79,8 @@ DeploymentCommand.description = `Creates a github deployment
 ...
 * = required
 usage: --repo=foo *
-       --owner=bar * 
-       --token=asdf1234 * 
+       --owner=bar *
+       --token=asdf1234 *
        --ref=mybranch *
        --env=production
        --payload='{"hello": "world"}'
@@ -92,14 +94,33 @@ returns deployment id if successful
 DeploymentCommand.flags = {
   'repo': flags.string({required: true, char: 'r', description: 'github repo name'}),
   'owner': flags.string({required: true, char: 'o', description: 'github owner name'}),
-  'token': flags.string({required: true, char: 't', description: 'github access token (required correct permissions)'}),
+  'token': flags.string({
+    required: true,
+    char: 't',
+    description: 'github access token (required correct permissions)',
+  }),
   'ref': flags.string({required: true, description: 'github ref,branch, or commit hash'}),
-  'env': flags.string({char: 'e', description: 'the deployment environment (production, qa, test, development etc)'}),
-  'payload': flags.string({char: 'p', description: 'a json string that contains any extra context you need for your deployment'}),
-  'auto-merge': flags.boolean({description: 'auto merge the default branch into pr (see gh deployments api for reference)', default: true, allowNo: true}),
-  'required-contexts': flags.string({description: 'parameter allows you to specify a subset of contexts that must be success'}),
+  'env': flags.string({
+    char: 'e',
+    description: 'the deployment environment (production, qa, test, development etc)',
+  }),
+  'payload': flags.string({
+    char: 'p',
+    description: 'a json string that contains any extra context you need for your deployment',
+  }),
+  'auto-merge': flags.boolean({
+    description: 'auto merge the default branch into pr (see gh deployments api for reference)',
+    default: true,
+    allowNo: true,
+  }),
+  'required-contexts': flags.string({
+    description: 'parameter allows you to specify a subset of contexts that must be success',
+  }),
   'description': flags.string({char: 'd', description: 'description for your deployment'}),
-  'transient-environment': flags.boolean({description: 'Specifies if the given environment is specific to the deployment and will no longer exist at some point in the future.'}),
+  'transient-environment': flags.boolean({
+    description:
+      'Specifies if the given environment is specific to the deployment and will no longer exist at some point in the future.',
+  }),
 };
 
 module.exports = DeploymentCommand;

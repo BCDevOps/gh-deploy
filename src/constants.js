@@ -1,4 +1,3 @@
-
 export const STATUS_STATES = {
   PENDING: 'pending',
   SUCCESS: 'success',
@@ -6,3 +5,7 @@ export const STATUS_STATES = {
   ERROR: 'error',
 };
 
+export const PREVIEWS = {
+  ANT_MAN: 'ant-man',
+  FLASH: 'flash',
+};
