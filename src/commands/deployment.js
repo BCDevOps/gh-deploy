@@ -36,6 +36,7 @@ class DeploymentCommand extends Command {
     const options = {
       ...rest,
       environment: env || rest.environment,
+      mediaType: {previews: ['ant-man']},
     };
 
     options.auto_merge = autoMerge;

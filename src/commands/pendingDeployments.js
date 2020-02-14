@@ -28,6 +28,9 @@ class DeploymentCommand extends Command {
     const options = {
       ...rest,
       ref: rest.ref || 'master',
+      mediaType: {
+        previews: ['ant-man', 'flash'],
+      },
     };
 
     // octokit will get deployments made to all environments if no environment is passed

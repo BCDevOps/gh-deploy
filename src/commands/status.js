@@ -37,6 +37,7 @@ class StatusCommand extends Command {
 
     const options = {
       ...rest,
+      mediaType: {previews: ['ant-man', 'flash']},
     };
 
     if (url) {
