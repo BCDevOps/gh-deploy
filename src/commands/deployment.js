@@ -99,16 +99,16 @@ returns deployment id if successful
 `;
 
 DeploymentCommand.flags = {
-  'repo': flags.string({required: true, char: 'r', description: 'Github repo name.'}),
-  'owner': flags.string({required: true, char: 'o', description: 'Github owner name.'}),
-  'token': flags.string({required: true, char: 't', description: 'Github access token (requires correct permissions).'}),
-  'ref': flags.string({required: true, description: 'The ref to deploy. This can be a branch, tag, or SHA.'}),
-  'env': flags.string({char: 'e', description: 'Name for the target deployment environment (e.g., production, staging, qa).'}),
+  'repo': flags.string({required: true, char: 'r', description: 'github repo name'}),
+  'owner': flags.string({required: true, char: 'o', description: 'github owner name'}),
+  'token': flags.string({required: true, char: 't', description: 'github access token (required correct permissions)'}),
+  'ref': flags.string({required: true, description: 'github ref,branch, or commit hash'}),
+  'env': flags.string({char: 'e', description: 'the deployment environment (production, qa, test, development etc)'}),
   'task': flags.string({description: 'Specifies a task to execute (e.g., deploy or deploy:migrations).'}),
-  'payload': flags.string({char: 'p', description: 'JSON payload with extra information about the deployment.'}),
-  'auto-merge': flags.boolean({description: 'Attempts to automatically merge the default branch into the requested ref, if it\s behind the default branch.', default: true, allowNo: true}),
-  'required-contexts': flags.string({description: 'The status contexts to verify against commit status checks. If you omit this parameter, GitHub verifies all unique contexts before creating a deployment.'}),
-  'description': flags.string({char: 'd', description: 'Short description of the deployment'}),
+  'payload': flags.string({char: 'p', description: 'a json string that contains any extra context you need for your deployment'}),
+  'auto-merge': flags.boolean({description: 'auto merge the default branch into pr (see gh deployments api for reference)', default: true, allowNo: true}),
+  'required-contexts': flags.string({description: 'parameter allows you to specify a subset of contexts that must be success'}),
+  'description': flags.string({char: 'd', description: 'description for your deployment'}),
   'transient-environment': flags.boolean({description: 'Specifies if the given environment is specific to the deployment and will no longer exist at some point in the future.'}),
   'production-environment': flags.boolean({description: 'Specifies if the given environment is one that end-users directly interact with.'}),
 };
