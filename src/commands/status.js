@@ -34,12 +34,14 @@ const STATUSES = {
 class StatusCommand extends Command {
   async run() {
     const {flags} = this.parse(StatusCommand);
-    const {repo, owner, token, url, deployment, ...rest} = flags;
+    const {repo, owner, token, url, deployment, 'auto-inactive': autoInactive, ...rest} = flags;
 
     const options = {
       ...rest,
       mediaType: {previews: [PREVIEWS.ANT_MAN, PREVIEWS.FLASH]},
     };
+
+    options.auto_inactive = autoInactive;
 
     if (url) {
       options.log_url = url;
@@ -68,6 +70,7 @@ usage: --repo=foo *
        --state=queued *
        --deployment=12354123
        --url=https://path-to-my-env.com
+       --[no-]auto-inactive
 returns status id if successful
 `;
 
@@ -79,6 +82,7 @@ StatusCommand.flags = {
   'description': flags.string({char: 'd', description: 'description for your deployment status'}),
   'state': flags.string({required: true, char: 's', description: 'the deployments state', options: Object.keys(STATUSES)}),
   'url': flags.string({char: 'u', description: 'The environment url (translates to log_url in the deployment status call)'}),
+  'auto-inactive': flags.boolean({description: 'auto adds an inactive state status to all prior non-transient, non-production environment deployments (see gh deployments api for reference)', default: true, allowNo: true}),
 };
 
 module.exports = StatusCommand;
