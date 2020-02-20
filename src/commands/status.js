@@ -34,15 +34,19 @@ const STATUSES = {
 class StatusCommand extends Command {
   async run() {
     const {flags} = this.parse(StatusCommand);
-    const {repo, owner, token, url, deployment, ...rest} = flags;
+    const {repo, owner, token, env, url, deployment, 'auto-inactive': autoInactive, ...rest} = flags;
 
     const options = {
       ...rest,
+      environment: env || rest.environment,
       mediaType: {previews: [PREVIEWS.ANT_MAN, PREVIEWS.FLASH]},
     };
 
+    options.auto_inactive = autoInactive;
+
     if (url) {
       options.log_url = url;
+      options.environment_url = url;
     }
 
     if (deployment) {
@@ -63,11 +67,14 @@ StatusCommand.description = `Creates a github deployment status
 ...
 * = required
 usage: --repo=foo *
-       --owner=bar * 
-       --token=asdf1234 * 
+       --owner=bar *
+       --token=asdf1234 *
        --state=queued *
-       --deployment=12354123
+       --deployment=12354123 *
+       --env=production
+       --description='this is a description'
        --url=https://path-to-my-env.com
+       --[no-]auto-inactive
 returns status id if successful
 `;
 
@@ -78,7 +85,9 @@ StatusCommand.flags = {
   'deployment': flags.string({required: true, description: 'github deployment id'}),
   'description': flags.string({char: 'd', description: 'description for your deployment status'}),
   'state': flags.string({required: true, char: 's', description: 'the deployments state', options: Object.keys(STATUSES)}),
-  'url': flags.string({char: 'u', description: 'The environment url (translates to log_url in the deployment status call)'}),
+  'url': flags.string({char: 'u', description: 'The environment url (translates to log_url and environment_url in the deployment status call)'}),
+  'env': flags.string({char: 'e', description: 'the deployment environment (production, qa, test, development etc)'}),
+  'auto-inactive': flags.boolean({description: 'auto adds an inactive state status to all prior non-transient, non-production environment deployments (see gh deployments api for reference)', default: true, allowNo: true}),
 };
 
 module.exports = StatusCommand;

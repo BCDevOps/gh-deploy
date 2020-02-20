@@ -33,6 +33,7 @@ class DeploymentCommand extends Command {
       'auto-merge': autoMerge,
       'required-contexts': requiredContexts,
       'transient-environment': transientEnvironment,
+      'production-environment': productionEnvironment,
       ...rest
     } = flags;
     const options = {
@@ -53,6 +54,10 @@ class DeploymentCommand extends Command {
 
     if (transientEnvironment) {
       options.transient_environment = transientEnvironment;
+    }
+
+    if (productionEnvironment) {
+      options.production_environment = productionEnvironment;
     }
 
     // if payload is a json string evaluate it
@@ -79,15 +84,17 @@ DeploymentCommand.description = `Creates a github deployment
 ...
 * = required
 usage: --repo=foo *
-       --owner=bar * 
-       --token=asdf1234 * 
+       --owner=bar *
+       --token=asdf1234 *
        --ref=mybranch *
        --env=production
+       --task=foo
        --payload='{"hello": "world"}'
        --[no-]auto-merge
        --required-contexts=foo,bar,baz OR [] for no contexts
        --description='this is a description'
        --transient-environment
+       --production-environment
 returns deployment id if successful
 `;
 
@@ -97,11 +104,13 @@ DeploymentCommand.flags = {
   'token': flags.string({required: true, char: 't', description: 'github access token (required correct permissions)'}),
   'ref': flags.string({required: true, description: 'github ref,branch, or commit hash'}),
   'env': flags.string({char: 'e', description: 'the deployment environment (production, qa, test, development etc)'}),
+  'task': flags.string({description: 'Specifies a task to execute (e.g., deploy or deploy:migrations).'}),
   'payload': flags.string({char: 'p', description: 'a json string that contains any extra context you need for your deployment'}),
   'auto-merge': flags.boolean({description: 'auto merge the default branch into pr (see gh deployments api for reference)', default: true, allowNo: true}),
   'required-contexts': flags.string({description: 'parameter allows you to specify a subset of contexts that must be success'}),
   'description': flags.string({char: 'd', description: 'description for your deployment'}),
   'transient-environment': flags.boolean({description: 'Specifies if the given environment is specific to the deployment and will no longer exist at some point in the future.'}),
+  'production-environment': flags.boolean({description: 'Specifies if the given environment is one that end-users directly interact with.'}),
 };
 
 module.exports = DeploymentCommand;
